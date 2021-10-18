@@ -1,6 +1,7 @@
 const express = require("express");
 const { crawlerPartialKey } = require("../db/dbKeys");
 const redisClient = require("../db/redis");
+const { getNextDepthLvlFromManager } = require("../middlewares/managerRequests");
 const { sqs } = require("../middlewares/sqs");
 const { getQueByCurrentDepth } = require("../operations/queOperations");
 const { setCrawlerByManager } = require("../utils/managerRequests");
@@ -16,7 +17,16 @@ router.post("/set-crawler", async (req, res) => {
 
     try {
         const { crawlerId } = await setCrawlerByManager(req.body.data)
+        console.log({ crawlerId });
         res.send({ crawlerId })
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+router.get("/get-next-depth/:crawlerId", getNextDepthLvlFromManager, async (req, res) => {
+    try {
+        res.send(req.treeNextDepth);
     } catch (err) {
         console.log(err);
     }
@@ -75,14 +85,7 @@ router.post("/set-links", async (req, res) => {
     }
 })
 
-router.get("/get-links/:key", async (req, res) => {
-    try {
-        const list = await redisClient.lrangeAsync(req.params.key, 0, -1);
-        res.send(list)
-    } catch (err) {
-        console.log(err);
-    }
-})
+
 
 // router.get("/search-photos/:key", getPhotosFromRedis, async (req, res) => {
 //     const searchValue = req.params.key
