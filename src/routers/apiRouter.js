@@ -17,10 +17,9 @@ router.post("/set-crawler", async (req, res) => {
 
     try {
         const { crawlerId } = await setCrawlerByManager(req.body.data)
-        console.log({ crawlerId });
         res.send({ crawlerId })
     } catch (err) {
-        console.log(err);
+        console.log("err");
     }
 })
 
@@ -28,7 +27,7 @@ router.get("/get-next-depth/:crawlerId", getNextDepthLvlFromManager, async (req,
     try {
         res.send(req.treeNextDepth);
     } catch (err) {
-        console.log(err);
+        console.log("err");
     }
 })
 

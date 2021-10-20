@@ -42,6 +42,7 @@ const isCurrentDepthScanFinished = (crawler) => {
 const getNumberOfCrawlers = async () => {
     try {
         const numberOfCrawlers = await redisClient.getAsync(crawlersCounter);
+        console.log({ numberOfCrawlers })
         if (numberOfCrawlers == null) {
             return 0;
         }

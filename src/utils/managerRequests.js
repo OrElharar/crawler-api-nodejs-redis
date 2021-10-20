@@ -10,7 +10,7 @@ const setCrawlerByManager = async (reqBody) => {
         });
         return res.data;
     } catch (err) {
-        throw (err)
+        return (err.data)
     }
 };
 
